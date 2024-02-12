@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.22-1.0.17"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.3.2"
+    id("com.google.cloud.tools.jib") version "2.8.0"
     id("io.micronaut.aot") version "4.3.2"
 }
 
@@ -19,8 +20,10 @@ dependencies {
     ksp("io.micronaut:micronaut-http-validation")
     ksp("io.micronaut.security:micronaut-security-annotations")
     ksp("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micrometer:context-propagation")
     implementation("io.micronaut:micronaut-management")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
+    implementation("io.micronaut.reactor:micronaut-reactor")
     implementation("io.micronaut.redis:micronaut-redis-lettuce")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
@@ -44,6 +47,13 @@ java {
 }
 
 
+tasks {
+    jib {
+        to {
+            image = "gcr.io/myapp/jib-image"
+        }
+    }
+}
 graalvmNative.toolchainDetection.set(false)
 micronaut {
     runtime("netty")
